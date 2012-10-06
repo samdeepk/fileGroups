@@ -1,4 +1,4 @@
-import os
+import os,sys
 import hashlib
 
 class fileGroups():
@@ -12,7 +12,7 @@ class fileGroups():
 		
 		print currentPath
 		for dirname, dirnames, filenames in os.walk(currentPath):
-			print dirname, dirnames, filenames
+			#print dirname, dirnames, filenames
 			for filename in filenames:
 				curFilePath = os.path.join(dirname, filename)
 				statinfo =  os.stat(curFilePath)
@@ -32,12 +32,12 @@ class fileGroups():
 		else:
 			
 			defaultSetObj = bucketObj["defaultSet"][0]
-			print
-			print defaultSetObj
+			#print
+			#print defaultSetObj
 			if defaultSetObj[2] == "null":
-				print defaultSetObj
+				#print defaultSetObj
 				defaultSetObj[2] = self.checkHash(defaultSetObj[0])
-				print defaultSetObj
+				#print defaultSetObj
 			if defaultSetObj[2] == fileInfo[2]:
 				self.buckets[fileInfo[1].st_size]["defaultSet"].append(fileInfo)				
 			else:
@@ -54,10 +54,18 @@ class fileGroups():
 			md5.update(data)
 		return md5.digest()
 		
-getFiles = fileGroups(dirRoot='/Users/sandeepkoduri/Desktop')
-getFiles.getFileList()
-print getFiles.buckets
+		
+def onExecute(args=None):	
+	if args is None:
+		args = sys.argv[1:]
+		if args: args= args[0]
+	if not args: args = raw_input('enter the folder path:')
+	getFiles = fileGroups(dirRoot=args)
+	
+	print getFiles.getFileList()
 		
 		
 	
+if __name__ == "__main__":
+	onExecute()
         
